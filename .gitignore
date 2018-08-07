@@ -1,0 +1,8 @@
+*~
+.DS_Store
+.Thumbs
+._*
+.idea
+csv/*.csv
+node_modules
+npm-debug.log*

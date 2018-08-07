@@ -1,0 +1,40 @@
+{
+  "name": "jp-city-lookup",
+  "description": "Japan City Code Lookup",
+  "version": "1.0.0",
+  "bugs": {
+    "url": "https://github.com/kawanet/jp-city-lookup/issues"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "iconv-lite": "^0.4.23",
+    "jis-x-0401": "github:kawanet/jis-x-0401",
+    "promisen": "^0.1.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.5.6",
+    "mocha": "^5.2.0",
+    "process.argv": "^0.1.0",
+    "promisen": "^0.1.1",
+    "typescript": "^3.0.1"
+  },
+  "homepage": "https://github.com/kawanet/jp-city-lookup#readme",
+  "keywords": [
+    "JIS-X-0402"
+  ],
+  "license": "ISC",
+  "main": "./lib/city.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawanet/jp-city-lookup.git"
+  },
+  "scripts": {
+    "fixpack": "fixpack",
+    "test": "./node_modules/.bin/mocha test",
+    "tsc": "./node_modules/.bin/tsc",
+    "tsc-declaration": "./node_modules/.bin/tsc --declaration --emitDeclarationOnly --outDir typings lib/jp-city-lookup.ts",
+    "tsc-watch": "./node_modules/.bin/tsc --watch"
+  },
+  "typings": "typings/jp-city-lookup.d.ts"
+}
