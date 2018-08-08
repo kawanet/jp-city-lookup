@@ -22,66 +22,57 @@ var writeFile = promisen.denodeify(fs.writeFile.bind(fs));
 var access = promisen.denodeify(fs.access.bind(fs));
 var Parser;
 (function (Parser) {
-    function parse(names) {
-        var mesh1 = {};
-        var mesh2 = {};
-        var cities = {};
-        return readCSV(names).then(function (array) {
+    var meshIndex = {};
+    var nameIndex = {};
+    var initialized;
+    function init() {
+        if (initialized)
+            return promisen.resolve();
+        return readCSV(NAMES).then(function (array) {
             array.forEach(function (row) {
-                // header row
+                // ignore header row
                 if (!(+row[0]))
                     return;
                 var city = row[0];
-                var code = row[2];
-                var code2 = code.substr(0, 6);
-                var code3 = code.substr(6);
-                var idx2 = mesh2[code2] || (mesh2[code2] = {});
-                idx2[city] = (idx2[city] || 0) + 1;
-                var idx1 = mesh1[code2] || (mesh1[code2] = {});
-                var list3 = idx1[code3] || (idx1[code3] = {});
-                list3[+city] = 1;
+                var array = meshIndex[city] || (meshIndex[city] = []);
+                array.push(row[2]);
                 // city code -> name
-                if (!cities[city]) {
-                    cities[city] = row[1].replace(/^.+(支庁|(総合)?振興局)/, "");
+                if (!nameIndex[city]) {
+                    nameIndex[city] = row[1].replace(/^.+(支庁|(総合)?振興局)/, "");
                 }
             });
-        }).then(function () {
-            var mesh = {};
-            Object.keys(mesh2).forEach(function (code2) {
-                var idx2 = mesh2[code2];
-                var array = Object.keys(idx2).sort(function (a, b) {
-                    return ((idx2[b] - idx2[a]) || ((+b) - (+a)));
-                });
-                var city = mesh2[code2] = +array[0];
-                var single = {};
-                var multi = {};
-                var item = mesh[code2] = [city];
-                if (array.length < 2)
-                    return;
-                item.push(single, multi);
-                var idx1 = mesh1[code2];
-                Object.keys(idx1).forEach(function (code3) {
-                    var list3 = Object.keys(idx1[code3]).map(function (v) { return +v; });
-                    if (list3.length > 1) {
-                        multi[code3] = list3;
-                    }
-                    else if (list3[0] !== city) {
-                        single[code3] = list3[0];
-                    }
-                });
-            });
-            return { mesh: mesh, city: cities };
+            initialized = true;
         });
     }
-    Parser.parse = parse;
+    Parser.init = init;
+    /**
+     * @return {string[]} array of JIS city codes
+     */
+    function all() {
+        return Object.keys(nameIndex).sort();
+    }
+    Parser.all = all;
+    /**
+     * @param {string} city - JIS city code
+     * @return {string[]} array of mesh codes for the city
+     */
+    function mesh(city) {
+        return meshIndex[city];
+    }
+    Parser.mesh = mesh;
+    /**
+     * @param {string} city - JIS city code
+     * @return {string} name of the city
+     */
+    function name(city) {
+        return nameIndex[city];
+    }
+    Parser.name = name;
     /**
      * read all CSV files
      */
     function readCSV(names) {
         var all = [];
-        // read all files when the argument not given
-        if (!names)
-            names = NAMES;
         return promisen.eachSeries(names, it)().then(function () { return all; });
         function it(name) {
             return loadFile(name)
