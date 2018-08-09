@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/kawanet/jp-city-lookup.svg?branch=master)](https://travis-ci.org/kawanet/jp-city-lookup) [![npm version](https://badge.fury.io/js/jp-city-lookup.svg)](https://badge.fury.io/js/jp-city-lookup)
 
 - JIS X 0402: Identification code for cities,towns and villages
-- 1km mesh based reverse geocoding
+- Lookup: 1km grid mesh reverse geocoding
+- Standalone: No module dependencies
 
 ### Synopsis
 
