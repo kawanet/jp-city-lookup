@@ -20,6 +20,11 @@ describe(FILE, function () {
         var list = jp_city_lookup_1.City.lookup({ lat: 26.2125, lng: 127.68111 });
         assert(contains(list, "47201"));
     });
+    it("Mt.Fuji", function () {
+        var list = jp_city_lookup_1.City.lookup({ ll: "35.3606,138.7278" });
+        assert(contains(list, "19202")); // 山梨県富士吉田市
+        assert(contains(list, "22207")); // 静岡県富士宮市
+    });
 });
 function contains(array, value) {
     return array.filter(function (_) { return (_ === value); }).length;
