@@ -1,23 +1,28 @@
 # Japan City Code Lookup
 
+[![Build Status](https://travis-ci.org/kawanet/jp-city-lookup.svg?branch=master)](https://travis-ci.org/kawanet/jp-city-lookup)
+
+- JIS X 0402: Identification code for cities,towns and villages
+- 1km mesh based reverse geocoding
+
 ### Synopsis
 
 ```js
 const City = require("jp-city-lookup").City;
 
-// by pair of latitude and longitude
+// lookup by pair of latitude and longitude
 console.log(City.lookup({lat: 35.68944, lng: 139.69167})); // => ["13104", "13113"]
 
-// by comma separated latitude and longitude
+// lookup by comma separated latitude and longitude
 console.log(City.lookup({ll: "35.1709,136.8815"})); // => ["23104", "23105"]
 
-// by JIS prefecture code
+// lookup by JIS prefecture code
 console.log(City.lookup({pref: "13"})); // => ["13101", "13102", ... "13421"]
 
-// by neighboring city code
+// lookup by neighboring city code
 console.log(City.lookup({neighboring: "13101"})); // => ["13102", "13104", ... "13106"]
 
-// by city name for code
+// name for city code
 console.log(City.name("13101")); // => "千代田区"
 ```
 
@@ -29,7 +34,7 @@ console.log(City.name("13101")); // => "千代田区"
 
 - [http://www.stat.go.jp/data/mesh/m_itiran.html](http://www.stat.go.jp/data/mesh/m_itiran.html)
 - [http://kikakurui.com/x0/X0402-2010-01.html](http://kikakurui.com/x0/X0402-2010-01.html)
-- [https://github.com/kawanet/jis-x-0401](https://github.com/kawanet/jis-x-0401)
+- [https://github.com/kawanet/jp-pref-lookup](https://github.com/kawanet/jp-pref-lookup)
 
 ### The MIT License (MIT)
 
