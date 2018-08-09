@@ -107,14 +107,14 @@ export module Parser
 		return access(file).catch(() => {
 			// fetch from remote when cache unavailable
 			const url = REMOVE_CSV + name + CSV_SUFFIX;
-			Logger.log("loading: " + url);
+			Logger.warn("loading: " + url);
 			return fetchFile(url).then(data => {
-				Logger.log("writing: " + file + " (" + data.length + " bytes)");
+				Logger.warn("writing: " + file + " (" + data.length + " bytes)");
 				return writeFile(file, data);
 			});
 		}).then(() => {
 			// read from local when cache available
-			Logger.log("reading: " + file);
+			Logger.warn("reading: " + file);
 			return readFile(file);
 		});
 	}

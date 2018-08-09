@@ -61,12 +61,12 @@ function CLI() {
 
 		json = JSON.stringify({mesh: mesh});
 		json = json.replace(/("\d{6}":)/g, "\n$1");
-		Logger.log("writing:", MESH);
+		Logger.warn("writing:", MESH);
 		fs.writeFileSync(MESH, json);
 
 		json = JSON.stringify({city: names});
 		json = json.replace(/("\d+":)/g, "\n$1");
-		Logger.log("writing:", CITY);
+		Logger.warn("writing:", CITY);
 		fs.writeFileSync(CITY, json);
 	});
 }
