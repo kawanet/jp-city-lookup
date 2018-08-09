@@ -92,14 +92,14 @@ var Parser;
         return access(file).catch(function () {
             // fetch from remote when cache unavailable
             var url = REMOVE_CSV + name + CSV_SUFFIX;
-            logger_1.Logger.log("loading: " + url);
+            logger_1.Logger.warn("loading: " + url);
             return fetchFile(url).then(function (data) {
-                logger_1.Logger.log("writing: " + file + " (" + data.length + " bytes)");
+                logger_1.Logger.warn("writing: " + file + " (" + data.length + " bytes)");
                 return writeFile(file, data);
             });
         }).then(function () {
             // read from local when cache available
-            logger_1.Logger.log("reading: " + file);
+            logger_1.Logger.warn("reading: " + file);
             return readFile(file);
         });
     }

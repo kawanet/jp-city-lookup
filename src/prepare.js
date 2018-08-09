@@ -51,11 +51,11 @@ function CLI() {
         var json;
         json = JSON.stringify({ mesh: mesh });
         json = json.replace(/("\d{6}":)/g, "\n$1");
-        logger_1.Logger.log("writing:", MESH);
+        logger_1.Logger.warn("writing:", MESH);
         fs.writeFileSync(MESH, json);
         json = JSON.stringify({ city: names });
         json = json.replace(/("\d+":)/g, "\n$1");
-        logger_1.Logger.log("writing:", CITY);
+        logger_1.Logger.warn("writing:", CITY);
         fs.writeFileSync(CITY, json);
     });
 }
