@@ -33,6 +33,7 @@ console.log(City.name("13101")); // => "千代田区"
 
 ### See Also
 
+- [http://www.stat.go.jp/english/data/mesh/05-1s.html](http://www.stat.go.jp/english/data/mesh/05-1s.html)
 - [http://www.stat.go.jp/data/mesh/m_itiran.html](http://www.stat.go.jp/data/mesh/m_itiran.html)
 - [http://kikakurui.com/x0/X0402-2010-01.html](http://kikakurui.com/x0/X0402-2010-01.html)
 - [https://github.com/kawanet/jp-pref-lookup](https://github.com/kawanet/jp-pref-lookup)
