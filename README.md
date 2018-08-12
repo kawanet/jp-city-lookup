@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/kawanet/jp-city-lookup.svg?branch=master)](https://travis-ci.org/kawanet/jp-city-lookup) [![npm version](https://badge.fury.io/js/jp-city-lookup.svg)](https://badge.fury.io/js/jp-city-lookup)
 
-- JIS X 0402: Identification code for cities,towns and villages
-- Lookup: 1km grid mesh reverse geocoding
+- JIS X 0402: Identification code for cities, towns and villages
+- Reverse Geocoding: Japan Standard Grid Square (1km accuracy)
 - Standalone: No module dependencies
 
 ### Synopsis
@@ -31,10 +31,14 @@ console.log(City.name("13101")); // => "千代田区"
 
 - [https://github.com/kawanet/jp-city-lookup](https://github.com/kawanet/jp-city-lookup)
 
+### Reference
+
+- 出典：「市区町村別メッシュ・コード一覧」（総務省統計局）licensed under CC BY
+- [http://www.stat.go.jp/data/mesh/m_itiran.html](http://www.stat.go.jp/data/mesh/m_itiran.html)
+- [http://www.stat.go.jp/english/data/mesh/05-1s.html](http://www.stat.go.jp/english/data/mesh/05-1s.html)
+
 ### See Also
 
-- [http://www.stat.go.jp/english/data/mesh/05-1s.html](http://www.stat.go.jp/english/data/mesh/05-1s.html)
-- [http://www.stat.go.jp/data/mesh/m_itiran.html](http://www.stat.go.jp/data/mesh/m_itiran.html)
 - [http://kikakurui.com/x0/X0402-2010-01.html](http://kikakurui.com/x0/X0402-2010-01.html)
 - [https://github.com/kawanet/jp-pref-lookup](https://github.com/kawanet/jp-pref-lookup)
 
