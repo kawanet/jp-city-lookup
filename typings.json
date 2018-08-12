@@ -1,0 +1,14 @@
+{
+  "include": [
+    "lib/*.ts"
+  ],
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "module": "commonjs",
+    "outDir": "typings",
+    "types": [
+      "node"
+    ]
+  }
+}

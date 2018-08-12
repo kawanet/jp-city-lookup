@@ -28,7 +28,7 @@
     "prepare": "node src/prepare.js dist/mesh.json dist/city.json",
     "test": "./node_modules/.bin/mocha test",
     "tsc": "./node_modules/.bin/tsc",
-    "tsc-declaration": "./node_modules/.bin/tsc --declaration --emitDeclarationOnly --outDir typings lib/jp-city-lookup.ts",
+    "tsc-typings": "./node_modules/.bin/tsc -p typings.json",
     "tsc-watch": "./node_modules/.bin/tsc --watch"
   },
   "typings": "typings/jp-city-lookup.d.ts"
