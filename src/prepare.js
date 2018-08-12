@@ -53,6 +53,8 @@ function CLI(meshJson, cityJson) {
                             progress: WARN,
                             each: function (_a) {
                                 var city = _a[0], name = _a[1], code = _a[2];
+                                if (name.search(/境界未定/) > -1)
+                                    return;
                                 var code2 = code.substr(0, 6);
                                 var code3 = code.substr(6);
                                 var idx2 = mesh2[code2] || (mesh2[code2] = {});

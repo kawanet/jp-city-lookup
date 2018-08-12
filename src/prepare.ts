@@ -15,6 +15,8 @@ async function CLI(meshJson, cityJson) {
 		progress: WARN,
 
 		each: ([city, name, code]) => {
+			if (name.search(/境界未定/) > -1) return;
+
 			const code2 = code.substr(0, 6);
 			const code3 = code.substr(6);
 
