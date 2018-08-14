@@ -6,7 +6,9 @@ const assert = require("assert");
 const FILE = __filename.split("/").pop();
 
 describe(FILE, () => {
-    it("lookup({neighboring: string})", () => {
+    it("lookup({neighboring: string})", function () {
+        this.timeout(10000);
+
         assert(contains(City.lookup({neighboring: "01101"}).map(City.name), "札幌市北区"));
         assert(contains(City.lookup({neighboring: "13101"}).map(City.name), "中央区"));
         assert(contains(City.lookup({neighboring: "27127"}).map(City.name), "大阪市中央区"));
