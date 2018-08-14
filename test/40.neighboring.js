@@ -5,6 +5,7 @@ var assert = require("assert");
 var FILE = __filename.split("/").pop();
 describe(FILE, function () {
     it("lookup({neighboring: string})", function () {
+        this.timeout(10000);
         assert(contains(jp_city_lookup_1.City.lookup({ neighboring: "01101" }).map(jp_city_lookup_1.City.name), "札幌市北区"));
         assert(contains(jp_city_lookup_1.City.lookup({ neighboring: "13101" }).map(jp_city_lookup_1.City.name), "中央区"));
         assert(contains(jp_city_lookup_1.City.lookup({ neighboring: "27127" }).map(jp_city_lookup_1.City.name), "大阪市中央区"));
