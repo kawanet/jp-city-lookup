@@ -10,7 +10,8 @@ function CLI(meshJson, cityJson) {
     var mesh2 = {};
     var meshIndex = {};
     var nameIndex = {};
-    jp_data_mesh_csv_1.files().forEach(function (file) {
+    jp_data_mesh_csv_1.files.forEach(function (name) {
+        var file = "./node_modules/jp-data-mesh-csv/" + name;
         WARN("reading: " + file);
         var binary = fs.readFileSync(file, null);
         var data = iconv.decode(binary, "CP932");

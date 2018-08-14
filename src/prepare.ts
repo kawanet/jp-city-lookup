@@ -12,8 +12,10 @@ function CLI(meshJson, cityJson) {
     const meshIndex = {};
     const nameIndex = {};
 
-    files().forEach(file => {
+    files.forEach(name => {
+        const file = "./node_modules/jp-data-mesh-csv/" + name;
         WARN("reading: " + file);
+
         const binary = fs.readFileSync(file, null);
 
         const data = iconv.decode(binary, "CP932");
