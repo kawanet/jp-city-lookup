@@ -33,9 +33,10 @@ console.log(City.name("13101")); // => "千代田区"
 
 ### Reference
 
-- 出典：「市区町村別メッシュ・コード一覧」（総務省統計局）licensed under CC BY
+- `出典：「市区町村別メッシュ・コード一覧」（総務省統計局）` licensed under CC BY 4.0
 - [http://www.stat.go.jp/data/mesh/m_itiran.html](http://www.stat.go.jp/data/mesh/m_itiran.html)
 - [http://www.stat.go.jp/english/data/mesh/05-1s.html](http://www.stat.go.jp/english/data/mesh/05-1s.html)
+- [https://github.com/jp-mirror/jp-data-mesh-csv](https://github.com/jp-mirror/jp-data-mesh-csv)
 
 ### See Also
 

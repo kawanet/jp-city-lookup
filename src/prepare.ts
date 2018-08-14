@@ -1,20 +1,28 @@
 // prepare.ts
 
-import {all} from "jp-grid-square-master";
-import {createWriteStream} from "fs";
+import * as fs from "fs";
+import * as iconv from "iconv-lite";
+import {files} from "jp-data-mesh-csv";
 
 const WARN = message => console.warn(message);
 
-async function CLI(meshJson, cityJson) {
+function CLI(meshJson, cityJson) {
 	const mesh1 = {};
 	const mesh2 = {};
 	const meshIndex = {};
 	const nameIndex = {};
 
-	await all({
-		progress: WARN,
+	files().forEach(file => {
+		WARN("reading: " + file);
+		const binary = fs.readFileSync(file, null);
 
-		each: ([city, name, code]) => {
+		const data = iconv.decode(binary, "CP932");
+
+		const rows = data.split(/\r?\n/)
+			.map(line => line.split(",").map(col => col.replace(/^"(.*)"$/, "$1")))
+			.filter(row => +row[0]);
+
+		rows.forEach(([city, name, code]) => {
 			if (name.search(/境界未定/) > -1) return;
 
 			const code2 = code.substr(0, 6);
@@ -30,7 +38,7 @@ async function CLI(meshJson, cityJson) {
 			if (!nameIndex[city]) {
 				nameIndex[city] = name.replace(/^.+(支庁|(総合)?振興局)/, "");
 			}
-		}
+		});
 	});
 
 	const list2 = Object.keys(mesh2);
@@ -74,7 +82,7 @@ async function CLI(meshJson, cityJson) {
 function write(file, json) {
 	if (file) {
 		WARN("writing: " + file);
-		createWriteStream(file).write(json);
+		fs.createWriteStream(file).write(json);
 	} else {
 		process.stdout.write(json);
 	}
