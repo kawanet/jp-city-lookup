@@ -30,7 +30,7 @@
     "fixpack": "fixpack",
     "test": "./node_modules/.bin/mocha test",
     "tsc": "./node_modules/.bin/tsc",
-    "tsc-typings": "./node_modules/.bin/tsc -p typings.json",
+    "tsc-typings": "./node_modules/.bin/tsc -p typings/typings.json",
     "tsc-watch": "./node_modules/.bin/tsc --watch"
   },
   "typings": "typings/jp-city-lookup.d.ts"

@@ -5,11 +5,15 @@
     "test/*.ts"
   ],
   "compilerOptions": {
+    "lib": [
+      "es2015"
+    ],
     "module": "commonjs",
     "removeComments": false,
-    "target": "ES5",
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "target": "es2016",
     "types": [
-      "mocha",
       "node"
     ]
   }

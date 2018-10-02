@@ -1,35 +1,57 @@
 "use strict";
 
+type MeshCode = string;
+type PrefCode = string;
+type CityCode = string;
+
+type CityCache = CityCode[];
+type MeshCache = MeshCode[];
+type CityIndex = { [city: string]: number };
+type CityMatrix = { [city: string]: CityIndex };
+
+export interface CityOptions {
+    /// JIS prefecture code
+    pref?: PrefCode | number,
+
+    /// latitude,longitude
+    ll?: string,
+
+    /// latitude
+    lat?: number,
+
+    /// longitude
+    lng?: number,
+
+    /// mesh code
+    mesh?: string,
+
+    /// JIS city code
+    neighboring?: CityCode | number,
+}
+
 export module City {
     const MESH = require("../dist/mesh.json").mesh;
     const CITY = require("../dist/city.json").city;
-    const cache: any = {};
+    const cache: {
+        city?: CityCache,
+        mesh?: MeshCache,
+        neighboring?: CityMatrix,
+        [pref: number]: CityCode[],
+    } = {};
 
-    export function name(code: string | number): string {
+    export function name(code: CityCode | number): string {
         return CITY[c5(code)];
     }
 
-    export function lookup(options: {
-        /// JIS prefecture code
-        pref?: string | number,
-        /// latitude,longitude
-        ll?: string,
-        /// latitude
-        lat?: number,
-        /// longitude
-        lng?: number,
-        /// mesh code
-        mesh?: string,
-        /// JIS city code
-        neighboring?: string | number
-    }): string[] {
-        if (!options) return;
+    export function lookup(options: CityOptions): CityCode[] {
+        let result: CityCode[] = [];
+        let found: boolean = false;
 
-        let result: string[];
+        if (!options) return result;
 
         // by pair of latitude and longitude
-        const lat = +options.lat;
-        const lng = +options.lng;
+        const lat = +options.lat!;
+        const lng = +options.lng!;
         if (lat || lng) {
             and(findForMesh(getMeshForLocation(lat, lng)));
         }
@@ -38,7 +60,7 @@ export module City {
         const ll = options.ll;
         if (ll) {
             const latlng = ("" + ll).split(",");
-            and(findForMesh(getMeshForLocation(latlng[0], latlng[1])));
+            and(findForMesh(getMeshForLocation(+latlng[0], +latlng[1])));
         }
 
         // mesh code
@@ -54,42 +76,46 @@ export module City {
         }
 
         // by JIS prefecture code
-        const pref = +options.pref;
+        const pref = +options.pref!;
         if (pref) {
-            // only pref condition
-            if (!result) return findForPref(pref);
-
-            // with other conditions
-            result = filterByPref(result, pref);
+            if (found) {
+                // with other conditions
+                result = filterByPref(result, pref);
+            } else {
+                // only pref condition
+                return findForPref(pref) || [];
+            }
         }
 
         return result;
 
-        function and(array) {
+        function and(array?: CityCode[]) {
             if (array) {
-                if (result) {
+                if (found) {
                     const index = arrayToIndex(array);
-                    result = result.filter(v => index[v]);
+                    result = result.filter(v => index[v]); // join
                 } else {
-                    result = array;
+                    result = array; // replace
                 }
+                found = true;
             } else {
-                result = [];
+                result = []; // empty
             }
         }
     }
 
-    function findNeighboring(code) {
-        const matrix = cache.neighboring || (cache.neighboring = makeNighboringMatrix());
+    function findNeighboring(code: CityCode | number): CityCode[] | undefined {
+        const matrix = cache.neighboring || (cache.neighboring = makeCityMatrix());
 
         const pairs = matrix[+code];
 
         if (pairs) return indexToArray(pairs);
     }
 
-    function makeNighboringMatrix() {
+
+    function makeCityMatrix(): CityMatrix {
         const all = cache.mesh || (cache.mesh = Object.keys(MESH));
-        const matrix = {};
+        const matrix: CityMatrix = {};
 
         all.forEach(mesh2 => {
             const item = MESH[mesh2];
@@ -112,7 +138,7 @@ export module City {
         return matrix;
     }
 
-    function findForPref(pref) {
+    function findForPref(pref: number): CityCode[] | undefined {
         const all = cache.city || (cache.city = Object.keys(CITY));
 
         const list = cache[pref] || (cache[pref] = filterByPref(all, pref).sort());
@@ -120,15 +146,12 @@ export module City {
         if (list.length) return list.slice();
     }
 
-    function filterByPref(array, pref) {
-        return array.filter(filter);
-
-        function filter(city) {
-            return Math.floor(+city / 1000) === pref;
-        }
+    function filterByPref(array: CityCode[], pref: number): CityCode[] {
+        return array.filter(city => Math.floor(+city / 1000) === +pref);
     }
 
-    function findForMesh(mesh) {
+    function findForMesh(mesh?: MeshCode): CityCode[] | undefined {
+        if (!mesh) return;
         mesh += "";
         const len = mesh && mesh.length;
         if (len === 6) {
@@ -138,7 +161,7 @@ export module City {
         }
     }
 
-    function findForMesh2(mesh2) {
+    function findForMesh2(mesh2: MeshCode): CityCode[] | undefined {
         const item = MESH[mesh2];
         if (!item) return;
 
@@ -148,7 +171,7 @@ export module City {
         if (item.length === 1) return [c5(city)];
 
         // more cities
-        const index = {};
+        const index: CityIndex = {};
         add(city);
 
         const single = item[1];
@@ -168,7 +191,7 @@ export module City {
         }
     }
 
-    function findForMesh3(mesh) {
+    function findForMesh3(mesh: MeshCode): CityCode[] | undefined {
         const mesh2 = mesh.substr(0, 6);
         const mesh3 = mesh.substr(6, 2);
         const item = MESH[mesh2];
@@ -182,7 +205,7 @@ export module City {
         return list.map(c5);
     }
 
-    function getMeshForLocation(latitude, longitude) {
+    function getMeshForLocation(latitude: number, longitude: number): MeshCode | undefined {
         latitude *= 1.5;
         longitude -= 100;
 
@@ -194,39 +217,36 @@ export module City {
             + c1(latitude * 80 % 10) + c1(longitude * 80 % 10);
     }
 
-    function c1(number) {
+    function c1(number: number): string {
         number |= 0;
         number %= 10;
         return "" + number;
     }
 
-    function c2(number) {
+    function c2(number: number): string {
         number |= 0;
         number %= 100;
         return (number < 10 ? "0" : "") + number;
     }
 
-    function c5(number) {
-        number |= 0;
+    function c5(number: number | string): string {
+        (number as number) |= 0;
         return ("000000" + number).substr(-5);
     }
 
-    function arrayToIndex(array) {
-        const index = {};
+    function arrayToIndex(array: CityCode[]): CityIndex {
+        const index: CityIndex = {};
 
-        array.forEach(v => {
-            index[v] = 1;
-        });
+        array.forEach(v => index[v] = 1);
 
         return index;
     }
 
-    function indexToArray(index) {
+    function indexToArray(index: CityIndex): string[] {
         return Object.keys(index).map(c5).sort(sort);
 
-        function sort(a, b) {
-            return (index[b] - index[a]) || ((+b) - (+a));
+        function sort(a: CityCode, b: CityCode) {
+            return ((+index[b]) - (+index[a])) || ((+b) - (+a));
         }
     }
 }
-
