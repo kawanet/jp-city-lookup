@@ -1,13 +1,18 @@
-"use strict";
+// jp-city-lookup
 
 type MeshCode = string;
 type PrefCode = string;
 type CityCode = string;
 
-type CityCache = CityCode[];
-type MeshCache = MeshCode[];
 type CityIndex = { [city: string]: number };
 type CityMatrix = { [city: string]: CityIndex };
+
+type SingleCityMesh = { [mesh: string]: number };
+type MultipleCityMesh = { [mesh: string]: number[] };
+type MeshCityItem = [number, SingleCityMesh?, MultipleCityMesh?];
+type MeshCityMaster = { [mesh: string]: MeshCityItem };
+
+type CityNameMaster = { [city: string]: string };
 
 export interface CityOptions {
     /// JIS prefecture code
@@ -23,18 +28,18 @@ export interface CityOptions {
     lng?: number,
 
     /// mesh code
-    mesh?: string,
+    mesh?: MeshCode,
 
     /// JIS city code
     neighboring?: CityCode | number,
 }
 
 export module City {
-    const MESH = require("../dist/mesh.json").mesh;
-    const CITY = require("../dist/city.json").city;
+    const MESH: MeshCityMaster = require("../dist/mesh.json").mesh;
+    const CITY: CityNameMaster = require("../dist/city.json").city;
     const cache: {
-        city?: CityCache,
-        mesh?: MeshCache,
+        city?: CityCode[],
+        mesh?: MeshCode[],
         neighboring?: CityMatrix,
         [pref: number]: CityCode[],
     } = {};
@@ -44,8 +49,8 @@ export module City {
     }
 
     export function lookup(options: CityOptions): CityCode[] {
-        let result: CityCode[] = [];
-        let found: boolean = false;
+        let result = [] as CityCode[];
+        let found = false;
 
         if (!options) return result;
 
@@ -112,20 +117,19 @@ export module City {
         if (pairs) return indexToArray(pairs);
     }
 
-
     function makeCityMatrix(): CityMatrix {
         const all = cache.mesh || (cache.mesh = Object.keys(MESH));
-        const matrix: CityMatrix = {};
+        const matrix = {} as CityMatrix;
 
         all.forEach(mesh2 => {
-            const item = MESH[mesh2];
-            const multiple = item[2];
+            const item = MESH[mesh2] as MeshCityItem;
+            const multiple = item[2] as MultipleCityMesh;
             if (!multiple) return;
 
             Object.keys(multiple).forEach(mesh3 => {
                 const array = multiple[mesh3];
                 array.forEach(code1 => {
-                    const pairs = matrix[code1] || (matrix[code1] = {});
+                    const pairs = matrix[code1] || (matrix[code1] = {} as CityIndex);
                     array.forEach(code2 => {
                         if (code1 !== code2) {
                             pairs[code2] = (pairs[code2] || 0) + 1;
@@ -162,7 +166,7 @@ export module City {
     }
 
     function findForMesh2(mesh2: MeshCode): CityCode[] | undefined {
-        const item = MESH[mesh2];
+        const item = MESH[mesh2] as MeshCityItem;
         if (!item) return;
 
         const city = item[0];
@@ -171,22 +175,22 @@ export module City {
         if (item.length === 1) return [c5(city)];
 
         // more cities
-        const index: CityIndex = {};
+        const index = {} as CityIndex;
         add(city);
 
-        const single = item[1];
+        const single = item[1] as SingleCityMesh;
         if (single) {
             Object.keys(single).forEach(mesh3 => add(single[mesh3]));
         }
 
-        const multiple = item[2];
+        const multiple = item[2] as MultipleCityMesh;
         if (multiple) {
             Object.keys(multiple).forEach(mesh3 => multiple[mesh3].forEach(add));
         }
 
         return indexToArray(index);
 
-        function add(city) {
+        function add(city: number) {
             index[city] = (index[city] || 0) + 1;
         }
     }
@@ -194,12 +198,12 @@ export module City {
     function findForMesh3(mesh: MeshCode): CityCode[] | undefined {
         const mesh2 = mesh.substr(0, 6);
         const mesh3 = mesh.substr(6, 2);
-        const item = MESH[mesh2];
+        const item = MESH[mesh2] as MeshCityItem;
         if (!item) return;
 
         const city = item[0];
-        const single = item[1];
-        const multiple = item[2];
+        const single = item[1] as SingleCityMesh;
+        const multiple = item[2] as MultipleCityMesh;
 
         const list = multiple[mesh3] || (single && single[mesh3] && [single[mesh3]]) || [city];
         return list.map(c5);
@@ -235,7 +239,7 @@ export module City {
     }
 
     function arrayToIndex(array: CityCode[]): CityIndex {
-        const index: CityIndex = {};
+        const index = {} as CityIndex;
 
         array.forEach(v => index[v] = 1);
 

@@ -4,13 +4,26 @@ import * as fs from "fs";
 import * as iconv from "iconv-lite";
 import {files} from "jp-data-mesh-csv";
 
-const WARN = message => console.warn(message);
+const WARN = (message: string) => console.warn(message);
 
-function CLI(meshJson, cityJson) {
-    const mesh1 = {};
-    const mesh2 = {};
-    const meshIndex = {};
-    const nameIndex = {};
+type HitIndex1 = { [key: string]: number };
+type HitIndex2 = { [key: string]: HitIndex1 };
+type HitIndex3 = { [key: string]: HitIndex2 };
+
+type CityCode = string;
+
+type SingleCityMesh = { [mesh: string]: number };
+type MultipleCityMesh = { [mesh: string]: number[] };
+type MeshCityItem = [number, SingleCityMesh?, MultipleCityMesh?];
+type MeshCityMaster = { [mesh: string]: MeshCityItem };
+
+type CityNameMaster = { [city: string]: string };
+
+function CLI(meshJson: string, cityJson: string) {
+    const indexA3 = {} as HitIndex3;
+    const indexB2 = {} as HitIndex2;
+    const meshIndex = {} as MeshCityMaster;
+    const nameIndex = {} as CityNameMaster;
 
     files.forEach(name => {
         const file = "./node_modules/jp-data-mesh-csv/" + name;
@@ -29,12 +42,12 @@ function CLI(meshJson, cityJson) {
             const code2 = code.substr(0, 6);
             const code3 = code.substr(6);
 
-            const idx2 = mesh2[code2] || (mesh2[code2] = {});
-            idx2[city] = (idx2[city] || 0) + 1;
+            const indexB1 = indexB2[code2] || (indexB2[code2] = {} as HitIndex1);
+            indexB1[city] = (indexB1[city] || 0) + 1;
 
-            const idx1 = mesh1[code2] || (mesh1[code2] = {});
-            const list3 = idx1[code3] || (idx1[code3] = {});
-            list3[+city] = 1;
+            const indexA2 = indexA3[code2] || (indexA3[code2] = {} as HitIndex2);
+            const indexA1 = indexA2[code3] || (indexA2[code3] = {} as HitIndex1);
+            indexA1[+city] = 1;
 
             if (!nameIndex[city]) {
                 nameIndex[city] = name.replace(/^.+(支庁|(総合)?振興局)/, "");
@@ -42,25 +55,24 @@ function CLI(meshJson, cityJson) {
         });
     });
 
-    const list2 = Object.keys(mesh2);
-    WARN("level 2: " + list2.length + " mesh");
+    const list2 = Object.keys(indexB2);
     list2.forEach(code2 => {
-        const idx2 = mesh2[code2];
-        const array = Object.keys(idx2).sort((a, b) => {
-            return ((idx2[b] - idx2[a]) || ((+b) - (+a)));
+        const indexB1 = indexB2[code2] as HitIndex1;
+        const array = Object.keys(indexB1).sort((a: CityCode, b: CityCode) => {
+            return (((+indexB1[b]) - (+indexB1[a])) || ((+b) - (+a)));
         });
-        const city = mesh2[code2] = +array[0];
+        const city = +array[0];
 
-        const item: Array<number | object> = meshIndex[code2] = [city];
+        const item = meshIndex[code2] = [city] as MeshCityItem;
         if (array.length < 2) return;
 
-        const single = {};
-        const multi = {};
+        const single = {} as SingleCityMesh;
+        const multi = {} as MultipleCityMesh;
         item.push(single, multi);
 
-        const idx1 = mesh1[code2];
-        Object.keys(idx1).forEach(code3 => {
-            const list3 = Object.keys(idx1[code3]).map(v => +v);
+        const indexA2 = indexA3[code2] as HitIndex2;
+        Object.keys(indexA2).forEach(code3 => {
+            const list3 = Object.keys(indexA2[code3]).map(v => +v);
             if (list3.length > 1) {
                 multi[code3] = list3;
             } else if (list3[0] !== city) {
@@ -80,7 +92,7 @@ function CLI(meshJson, cityJson) {
     write(cityJson, json);
 }
 
-function write(file, json) {
+function write(file: string, json: string) {
     if (file) {
         WARN("writing: " + file);
         fs.createWriteStream(file).write(json);

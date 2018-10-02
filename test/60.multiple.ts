@@ -58,6 +58,6 @@ describe(FILE, () => {
     });
 });
 
-function contains(array, value) {
-    return array && array.filter(_ => (_ === value)).length;
+function contains(array: string[], value: string): boolean {
+    return array && array.some(v => (v === value));
 }
