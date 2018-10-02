@@ -1,18 +1,18 @@
 {
   "name": "jp-city-lookup",
   "description": "Japan City Code Lookup / 1km grid reverse geocoding",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "author": "@kawanet",
   "bugs": {
     "url": "https://github.com/kawanet/jp-city-lookup/issues"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.5.8",
-    "iconv-lite": "^0.4.23",
+    "@types/node": "^10.11.3",
+    "iconv-lite": "^0.4.24",
     "jp-data-mesh-csv": "github:jp-mirror/jp-data-mesh-csv",
     "mocha": "^5.2.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.1.1"
   },
   "homepage": "https://github.com/kawanet/jp-city-lookup#readme",
   "keywords": [
