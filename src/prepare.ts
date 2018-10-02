@@ -1,4 +1,4 @@
-// prepare.ts
+// prepare
 
 import * as fs from "fs";
 import * as iconv from "iconv-lite";
@@ -10,8 +10,6 @@ type HitIndex1 = { [key: string]: number };
 type HitIndex2 = { [key: string]: HitIndex1 };
 type HitIndex3 = { [key: string]: HitIndex2 };
 
-type CityCode = string;
-
 type SingleCityMesh = { [mesh: string]: number };
 type MultipleCityMesh = { [mesh: string]: number[] };
 type MeshCityItem = [number, SingleCityMesh?, MultipleCityMesh?];
@@ -20,8 +18,8 @@ type MeshCityMaster = { [mesh: string]: MeshCityItem };
 type CityNameMaster = { [city: string]: string };
 
 function CLI(meshJson: string, cityJson: string) {
-    const indexA3 = {} as HitIndex3;
-    const indexB2 = {} as HitIndex2;
+    const lv23Index = {} as HitIndex3;
+    const lv2Index = {} as HitIndex2;
     const meshIndex = {} as MeshCityMaster;
     const nameIndex = {} as CityNameMaster;
 
@@ -46,12 +44,12 @@ function CLI(meshJson: string, cityJson: string) {
             const code2 = code.substr(0, 6);
             const code3 = code.substr(6);
 
-            const indexB1 = indexB2[code2] || (indexB2[code2] = {} as HitIndex1);
-            indexB1[city] = (indexB1[city] || 0) + 1;
+            const lv2Cities = lv2Index[code2] || (lv2Index[code2] = {} as HitIndex1);
+            lv2Cities[city] = (lv2Cities[city] || 0) + 1;
 
-            const indexA2 = indexA3[code2] || (indexA3[code2] = {} as HitIndex2);
-            const indexA1 = indexA2[code3] || (indexA2[code3] = {} as HitIndex1);
-            indexA1[+city] = 1;
+            const lv3Index = lv23Index[code2] || (lv23Index[code2] = {} as HitIndex2);
+            const lv3Cities = lv3Index[code3] || (lv3Index[code3] = {} as HitIndex1);
+            lv3Cities[+city] = 1;
 
             if (!nameIndex[city]) {
                 nameIndex[city] = name.replace(/^.+(支庁|(総合)?振興局)/, "");
@@ -61,10 +59,10 @@ function CLI(meshJson: string, cityJson: string) {
 
     // STEP #2
 
-    for (const code2 in indexB2) {
-        const indexB1 = indexB2[code2] as HitIndex1;
-        const sorter = (a: CityCode, b: CityCode) => (((+indexB1[b]) - (+indexB1[a])) || ((+b) - (+a)));
-        const array = Object.keys(indexB1).sort(sorter);
+    for (const code2 in lv2Index) {
+        const lv2Cities = lv2Index[code2] as HitIndex1;
+        const sorter = (a: string, b: string) => (((+lv2Cities[b]) - (+lv2Cities[a])) || ((+b) - (+a)));
+        const array = Object.keys(lv2Cities).sort(sorter);
 
         // the most major city in the level 2 mesh
         const city = +array[0];
@@ -78,9 +76,9 @@ function CLI(meshJson: string, cityJson: string) {
         const multi = {} as MultipleCityMesh;
         item.push(single, multi);
 
-        const indexA2 = indexA3[code2] as HitIndex2;
-        for (const code3 in indexA2) {
-            const list3 = Object.keys(indexA2[code3]).map(v => +v);
+        const lv3Index = lv23Index[code2] as HitIndex2;
+        for (const code3 in lv3Index) {
+            const list3 = Object.keys(lv3Index[code3]).map(v => +v);
 
             if (list3.length > 1) {
                 // the level 3 mesh has multiple cities
