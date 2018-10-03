@@ -10,7 +10,7 @@
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.11.3",
     "iconv-lite": "^0.4.24",
-    "jp-data-mesh-csv": "github:jp-mirror/jp-data-mesh-csv",
+    "jp-data-mesh-csv": "^0.2.0",
     "mocha": "^5.2.0",
     "typescript": "^3.1.1"
   },
