@@ -62,14 +62,14 @@ export module City {
         const lat = +options.lat!;
         const lng = +options.lng!;
         if (lat || lng) {
-            and(findForMesh(getMeshForLocation(lat, lng)));
+            and(findForMesh(getMeshForLocation(lat, lng)!));
         }
 
         // by comma separated latitude and longitude
         const ll = options.ll;
         if (ll) {
             const latlng = ("" + ll).split(",");
-            and(findForMesh(getMeshForLocation(+latlng[0], +latlng[1])));
+            and(findForMesh(getMeshForLocation(+latlng[0], +latlng[1])!));
         }
 
         // mesh code
@@ -160,7 +160,7 @@ export module City {
         return array.filter(city => Math.floor(+city / 1000) === +pref);
     }
 
-    function findForMesh(mesh?: MeshCode): CityCode[] | undefined {
+    function findForMesh(mesh: MeshCode): CityCode[] | undefined {
         if (!mesh) return;
         mesh += "";
         const len = mesh && mesh.length;
