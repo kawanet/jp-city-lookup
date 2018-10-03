@@ -14,6 +14,10 @@ type MeshCityMaster = { [mesh: string]: MeshCityItem };
 
 type CityNameMaster = { [city: string]: string };
 
+const c1 = fixedString(1);
+const c2 = fixedString(2);
+const c5 = fixedString(5);
+
 export interface CityOptions {
     /// JIS prefecture code
     pref?: PrefCode | number,
@@ -221,23 +225,6 @@ export module City {
             + c1(latitude * 80 % 10) + c1(longitude * 80 % 10);
     }
 
-    function c1(number: number): string {
-        number |= 0;
-        number %= 10;
-        return "" + number;
-    }
-
-    function c2(number: number): string {
-        number |= 0;
-        number %= 100;
-        return (number < 10 ? "0" : "") + number;
-    }
-
-    function c5(number: number | string): string {
-        (number as number) |= 0;
-        return ("000000" + number).substr(-5);
-    }
-
     function arrayToIndex(array: CityCode[]): CityIndex {
         const index = {} as CityIndex;
 
@@ -253,4 +240,13 @@ export module City {
             return ((+index[b]) - (+index[a])) || ((+b) - (+a));
         }
     }
+}
+
+/**
+ * @private
+ */
+
+function fixedString(length: number) {
+    return (number: number | string) => (number && (number as string).length === length) ?
+        (number as string) : ("00000" + (+number | 0)).substr(-length);
 }
