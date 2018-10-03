@@ -18,7 +18,7 @@ const c1 = fixedString(1);
 const c2 = fixedString(2);
 const c5 = fixedString(5);
 
-export interface CityOptions {
+export interface LookupOptions {
     /// JIS prefecture code
     pref?: PrefCode | number,
 
@@ -48,11 +48,11 @@ export module City {
         [pref: number]: CityCode[],
     } = {};
 
-    export function name(code: CityCode | number): string {
+    export function name(code: CityCode | number): string | undefined {
         return CITY[c5(code)];
     }
 
-    export function lookup(options: CityOptions): CityCode[] {
+    export function lookup(options: LookupOptions): CityCode[] {
         let result = [] as CityCode[];
         let found = false;
 

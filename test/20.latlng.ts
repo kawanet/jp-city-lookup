@@ -34,6 +34,6 @@ describe(FILE, () => {
     });
 });
 
-function contains(array: string[], value: string): boolean {
+function contains(array: any[], value: string): boolean {
     return array && array.some(v => (v === value));
 }

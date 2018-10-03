@@ -1,7 +1,7 @@
 type MeshCode = string;
 type PrefCode = string;
 type CityCode = string;
-export interface CityOptions {
+export interface LookupOptions {
     pref?: PrefCode | number;
     ll?: string;
     lat?: number;
@@ -10,7 +10,7 @@ export interface CityOptions {
     neighboring?: CityCode | number;
 }
 export declare module City {
-    function name(code: CityCode | number): string;
-    function lookup(options: CityOptions): CityCode[];
+    function name(code: CityCode | number): string | undefined;
+    function lookup(options: LookupOptions): CityCode[];
 }
 export {};
