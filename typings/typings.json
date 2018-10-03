@@ -10,12 +10,13 @@
     ],
     "module": "commonjs",
     "noImplicitAny": true,
-    "noImplicitReturns": false,
+    "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "removeComments": false,
     "outDir": ".",
-    "skipLibCheck": true,
-    "strictNullChecks": true
+    "skipLibCheck": false,
+    "strictNullChecks": true,
   }
 }

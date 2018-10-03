@@ -117,8 +117,9 @@ export module City {
         const matrix = cache.neighboring || (cache.neighboring = makeCityMatrix());
 
         const pairs = matrix[+code];
+        if (!pairs) return;
 
-        if (pairs) return indexToArray(pairs);
+        return indexToArray(pairs);
     }
 
     function makeCityMatrix(): CityMatrix {
@@ -150,8 +151,9 @@ export module City {
         const all = cache.city || (cache.city = Object.keys(CITY));
 
         const list = cache[pref] || (cache[pref] = filterByPref(all, pref).sort());
+        if (!list.length) return;
 
-        if (list.length) return list.slice();
+        return list.slice();
     }
 
     function filterByPref(array: CityCode[], pref: number): CityCode[] {
@@ -162,11 +164,9 @@ export module City {
         if (!mesh) return;
         mesh += "";
         const len = mesh && mesh.length;
-        if (len === 6) {
-            return findForMesh2(mesh);
-        } else if (len === 8) {
-            return findForMesh3(mesh);
-        }
+        if (len === 6) return findForMesh2(mesh);
+        if (len === 8) return findForMesh3(mesh);
+        return;
     }
 
     function findForMesh2(mesh2: MeshCode): CityCode[] | undefined {
