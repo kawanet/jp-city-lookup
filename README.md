@@ -1,6 +1,7 @@
 # Japan City Code Lookup
 
-[![Build Status](https://travis-ci.org/kawanet/jp-city-lookup.svg?branch=master)](https://travis-ci.org/kawanet/jp-city-lookup) [![npm version](https://badge.fury.io/js/jp-city-lookup.svg)](https://badge.fury.io/js/jp-city-lookup)
+[![Node.js CI](https://github.com/kawanet/jp-city-lookup/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/jp-city-lookup/actions/)
+[![npm version](https://badge.fury.io/js/jp-city-lookup.svg)](https://badge.fury.io/js/jp-city-lookup)
 
 - JIS X 0402: Identification code for cities, towns and villages
 - Reverse Geocoding: Japan Standard Grid Square (1km accuracy)
