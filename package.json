@@ -14,6 +14,14 @@
     "mocha": "^5.2.0",
     "typescript": "^3.1.1"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/*.json",
+    "lib/*.js",
+    "src/*.js",
+    "types/*.d.ts"
+  ],
   "homepage": "https://github.com/kawanet/jp-city-lookup#readme",
   "keywords": [
     "JIS-X-0402",
@@ -26,9 +34,10 @@
     "url": "git+https://github.com/kawanet/jp-city-lookup.git"
   },
   "scripts": {
+    "build": "./node_modules/.bin/tsc && npm run update",
     "fixpack": "fixpack",
+    "prepack": "npm run build && npm test",
     "test": "./node_modules/.bin/mocha test",
-    "tsc": "./node_modules/.bin/tsc",
     "tsc-typings": "./node_modules/.bin/tsc -p typings/typings.json",
     "tsc-watch": "./node_modules/.bin/tsc --watch",
     "update": "node src/prepare.js dist/mesh.json dist/city.json"
