@@ -10,7 +10,7 @@
 ### Synopsis
 
 ```js
-const City = require("jp-city-lookup").City;
+const {City} = require("jp-city-lookup");
 
 // lookup by pair of latitude and longitude
 console.log(City.lookup({lat: 35.68944, lng: 139.69167})); // => ["13104", "13113"]
