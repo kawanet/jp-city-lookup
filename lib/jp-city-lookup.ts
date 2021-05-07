@@ -1,7 +1,12 @@
-// jp-city-lookup
+/**
+ * jp-city-lookup
+ *
+ * @see https://github.com/kawanet/jp-city-lookup
+ */
+
+import type {LookupOptions} from "../";
 
 type MeshCode = string;
-type PrefCode = string;
 type CityCode = string;
 
 type CityIndex = { [city: string]: number };
@@ -17,26 +22,6 @@ type CityNameMaster = { [city: string]: string };
 const c1 = fixedString(1);
 const c2 = fixedString(2);
 const c5 = fixedString(5);
-
-export interface LookupOptions {
-    /// JIS prefecture code
-    pref?: PrefCode | number,
-
-    /// latitude,longitude
-    ll?: string,
-
-    /// latitude
-    lat?: number,
-
-    /// longitude
-    lng?: number,
-
-    /// mesh code
-    mesh?: MeshCode,
-
-    /// JIS city code
-    neighboring?: CityCode | number,
-}
 
 export module City {
     const MESH: MeshCityMaster = require("../dist/mesh.json").mesh;

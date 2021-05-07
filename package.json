@@ -1,19 +1,27 @@
 {
   "name": "jp-city-lookup",
   "description": "Japan City Code Lookup / 1km grid reverse geocoding",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "@kawanet",
   "bugs": {
     "url": "https://github.com/kawanet/jp-city-lookup/issues"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.11.3",
-    "iconv-lite": "^0.4.24",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.44",
+    "iconv-lite": "^0.6.2",
     "jp-data-mesh-csv": "^0.2.0",
-    "mocha": "^5.2.0",
-    "typescript": "^3.1.1"
+    "mocha": "^8.4.0",
+    "typescript": "^4.2.4"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/*.json",
+    "lib/*.js",
+    "src/*.js",
+    "types/*.d.ts"
+  ],
   "homepage": "https://github.com/kawanet/jp-city-lookup#readme",
   "keywords": [
     "JIS-X-0402",
@@ -26,10 +34,10 @@
     "url": "git+https://github.com/kawanet/jp-city-lookup.git"
   },
   "scripts": {
+    "build": "./node_modules/.bin/tsc && npm run update",
     "fixpack": "fixpack",
+    "prepack": "npm run build && npm test",
     "test": "./node_modules/.bin/mocha test",
-    "tsc": "./node_modules/.bin/tsc",
-    "tsc-typings": "./node_modules/.bin/tsc -p typings/typings.json",
     "tsc-watch": "./node_modules/.bin/tsc --watch",
     "update": "node src/prepare.js dist/mesh.json dist/city.json"
   },

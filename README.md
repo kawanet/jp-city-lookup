@@ -1,6 +1,7 @@
 # Japan City Code Lookup
 
-[![Build Status](https://travis-ci.org/kawanet/jp-city-lookup.svg?branch=master)](https://travis-ci.org/kawanet/jp-city-lookup) [![npm version](https://badge.fury.io/js/jp-city-lookup.svg)](https://badge.fury.io/js/jp-city-lookup)
+[![Node.js CI](https://github.com/kawanet/jp-city-lookup/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/jp-city-lookup/actions/)
+[![npm version](https://badge.fury.io/js/jp-city-lookup.svg)](https://badge.fury.io/js/jp-city-lookup)
 
 - JIS X 0402: Identification code for cities, towns and villages
 - Reverse Geocoding: Japan Standard Grid Square (1km accuracy)
@@ -29,23 +30,23 @@ console.log(City.name("13101")); // => "千代田区"
 
 ### GitHub
 
-- [https://github.com/kawanet/jp-city-lookup](https://github.com/kawanet/jp-city-lookup)
+- https://github.com/kawanet/jp-city-lookup
 
 ### Reference
 
 - `出典：「市区町村別メッシュ・コード一覧」（総務省統計局）` licensed under CC BY 4.0
-- [http://www.stat.go.jp/data/mesh/m_itiran.html](http://www.stat.go.jp/data/mesh/m_itiran.html)
-- [http://www.stat.go.jp/english/data/mesh/05-1s.html](http://www.stat.go.jp/english/data/mesh/05-1s.html)
-- [https://github.com/jp-mirror/jp-data-mesh-csv](https://github.com/jp-mirror/jp-data-mesh-csv)
+- https://www.stat.go.jp/data/mesh/m_itiran.html
+- https://www.stat.go.jp/english/data/mesh/05-1s.html
+- https://github.com/jp-mirror/jp-data-mesh-csv
 
 ### See Also
 
-- [http://kikakurui.com/x0/X0402-2010-01.html](http://kikakurui.com/x0/X0402-2010-01.html)
-- [https://github.com/kawanet/jp-pref-lookup](https://github.com/kawanet/jp-pref-lookup)
+- http://kikakurui.com/x0/X0402-2010-01.html
+- https://github.com/kawanet/jp-pref-lookup
 
 ### The MIT License (MIT)
 
-Copyright (c) 2018 Yusuke Kawasaki
+Copyright (c) 2018-2021 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
