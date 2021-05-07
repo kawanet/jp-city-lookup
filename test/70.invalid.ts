@@ -1,9 +1,9 @@
 "use strict";
 
 import "mocha";
-import {City, LookupOptions} from "../lib/jp-city-lookup";
+import {strict as assert} from "assert";
+import {City, LookupOptions} from "../";
 
-const assert = require("assert");
 const FILE = __filename.split("/").pop() as string;
 
 describe(FILE, () => {
@@ -11,8 +11,8 @@ describe(FILE, () => {
     const test = (title: string, options?: LookupOptions) => {
         it(title, () => {
             const list = City.lookup(options!);
-            assert(Array.isArray(list));
-            assert.strictEqual(list.length, 0);
+            assert.ok(Array.isArray(list));
+            assert.equal(list.length, 0);
         });
     };
 
