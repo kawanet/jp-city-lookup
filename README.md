@@ -41,8 +41,10 @@ console.log(City.name("13101")); // => "千代田区"
 
 ### See Also
 
-- http://kikakurui.com/x0/X0402-2010-01.html
-- https://github.com/kawanet/jp-pref-lookup
+- https://kikakurui.com/x0/X0402-2010-01.html
+- https://www.npmjs.com/package/jp-pref-lookup
+- https://www.npmjs.com/package/jp-city-lookup
+- https://www.npmjs.com/package/jp-zipcode-lookup
 
 ### The MIT License (MIT)
 
