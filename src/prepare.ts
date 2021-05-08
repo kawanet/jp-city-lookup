@@ -1,8 +1,7 @@
 // prepare
 
 import * as fs from "fs";
-import * as iconv from "iconv-cp932";
-import {dirname, files} from "jp-data-mesh-csv";
+import * as GridMaster from "jp-grid-square-master";
 
 const WARN = (message: string) => console.warn(message);
 
@@ -14,10 +13,9 @@ type SingleCityMesh = { [mesh: string]: number };
 type MultipleCityMesh = { [mesh: string]: number[] };
 type MeshCityItem = [number, SingleCityMesh?, MultipleCityMesh?];
 type MeshCityMaster = { [mesh: string]: MeshCityItem };
-
 type CityNameMaster = { [city: string]: string };
 
-function CLI(meshJson: string, cityJson: string) {
+async function CLI(meshJson: string, cityJson: string) {
     const lv23Index = {} as HitIndex3;
     const lv2Index = {} as HitIndex2;
     const meshIndex = {} as MeshCityMaster;
@@ -25,21 +23,13 @@ function CLI(meshJson: string, cityJson: string) {
 
     // STEP #1
 
-    for (const name of files) {
-        const file = `${dirname}/${name}`;
-        WARN("reading: " + file);
-
-        const binary = fs.readFileSync(file, null);
-
-        const data = iconv.decode(binary);
-
-        const rows = data.split(/\r?\n/).map(line => line.split(",").map(col => col.replace(/^"(.*)"$/, "$1")));
-
-        for (const row of rows) {
+    await GridMaster.all({
+        progress: WARN,
+        each: row => {
             const [city, name, code] = row;
 
-            if (!+city) continue;
-            if (name.search(/境界未定/) > -1) continue;
+            if (!+city) return;
+            if (name.search(/境界未定/) > -1) return;
 
             const code2 = code.substr(0, 6);
             const code3 = code.substr(6);
@@ -55,7 +45,7 @@ function CLI(meshJson: string, cityJson: string) {
                 nameIndex[city] = name.replace(/^.+(支庁|(総合)?振興局)/, "");
             }
         }
-    }
+    });
 
     // STEP #2
 
